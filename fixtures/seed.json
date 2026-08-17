@@ -891,8 +891,8 @@
   "model": "auth.user",
   "pk": 2,
   "fields": {
-    "password": "pbkdf2_sha256$1000000$4b8LOrqvn0T8CP3SpaD9JX$ZHn3wvybAH9usCvlFujmuYr7huuob7NZ3wve3lsxEIY=",
-    "last_login": "2026-08-17T14:44:21.935Z",
+    "password": "pbkdf2_sha256$1000000$EZu7MBEi7lhPzNjMFhKnEo$sFz4jN4bXHG3BAcLJQsiihcL1M/DHz5Xf+MW3cK9j10=",
+    "last_login": "2026-08-17T15:24:00.777Z",
     "is_superuser": true,
     "username": "Amulya",
     "first_name": "",
