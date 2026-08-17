@@ -24,13 +24,56 @@ load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r!sp5-^_-*2u@n-r$@ph%+!l1kxrov%cy@@ftf@in&#6)k^ff5'
+# Read from the environment in production. The fallback exists only so a
+# fresh clone runs locally without setup — the deployed site must set
+# SECRET_KEY, and the old hardcoded key is treated as compromised because it
+# was committed to git history.
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'django-insecure-local-dev-only-do-not-use-in-production',
+)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to False so a missing environment variable can never expose
+# tracebacks in production. Local development sets DEBUG=True in .env.
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
+_extra_host = os.environ.get('ALLOWED_HOST')
+if _extra_host:
+    ALLOWED_HOSTS.append(_extra_host)
+
+# Django 4+ checks Origin against this on any HTTPS POST. Without it every
+# login, registration and booking on the deployed site fails CSRF validation.
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
+
+if not DEBUG:
+    # Vercel terminates TLS and forwards the original scheme in this header.
+    # Django needs it to know the request was HTTPS, otherwise the secure
+    # cookies below are never sent and sessions silently break.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Session hardening — limits the window for a stolen session cookie and
+    # prevents a session from outliving the browser visit.
+    SESSION_COOKIE_AGE = 60 * 60 * 4
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+    # Deliberately short and without preload/includeSubDomains. HSTS is hard
+    # to undo once browsers cache it, and a long max-age on a deployment this
+    # young is not worth the risk.
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+
+    # NOT enabling SECURE_SSL_REDIRECT: Vercel already serves HTTPS and
+    # redirects HTTP itself. Turning it on as well risks a redirect loop,
+    # which is not a risk worth taking on a one-shot deployment.
 
 
 # Application definition
