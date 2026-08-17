@@ -1,0 +1,58 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="row">
+        <!-- Movie Poster -->
+        <div class="col-md-4">
+            <img src="{{ movie.image.url }}" class="img-fluid rounded shadow" alt="{{ movie.name }}">
+        </div>
+
+        <!-- Movie Info -->
+        <div class="col-md-8">
+            <h1>{{ movie.name }}</h1>
+            <p>
+                <span class="badge badge-secondary">{{ movie.genre }}</span>
+                <span class="badge badge-info ml-1">{{ movie.language }}</span>
+            </p>
+            <p><i class="fas fa-star text-warning"></i> <strong>{{ movie.rating }}</strong> / 10</p>
+            <p><i class="fas fa-users"></i> <strong>Cast:</strong> {{ movie.cast }}</p>
+            {% if movie.description %}
+            <p>{{ movie.description }}</p>
+            {% endif %}
+
+            <a href="{% url 'theater_list' movie.id %}" class="btn btn-primary mt-3">
+                Book Tickets <i class="fas fa-ticket-alt ml-1"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Trailer Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Trailer</h3>
+            <hr>
+            {% if embed_url %}
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe
+                    class="embed-responsive-item"
+                    src="{{ embed_url }}"
+                    loading="lazy"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    referrerpolicy="strict-origin-when-cross-origin">
+                </iframe>
+            </div>
+            {% else %}
+            <div class="alert alert-secondary">
+                <i class="fas fa-film mr-2"></i> Trailer not available for this movie.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}

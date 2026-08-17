@@ -1,0 +1,13 @@
+/* ============================================================
+   movie_list.css  —  Movie grid & filter page
+   (templates/movies/movie_list.html)
+   ============================================================ */
+
+.card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}

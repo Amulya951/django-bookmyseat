@@ -4,10 +4,23 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from movies.models import Movie, Booking
+from movies.utils import youtube_embed_url
 
 def home(request):
-    movies = Movie.objects.all()
-    return render(request, 'home.html', {'movies': movies})
+    # fetch all movies for homepage
+    movies = list(Movie.objects.all())
+
+    # attach the YouTube embed URL to each movie for hover-to-play trailers
+    for movie in movies:
+        movie.embed_url = youtube_embed_url(movie.trailer_url)
+
+    # top 6 highest-rated movies for the auto-rotating banner
+    banner_movies = Movie.objects.order_by('-rating')[:6]
+
+    return render(request, 'home.html', {
+        'movies': movies,
+        'banner_movies': banner_movies,
+    })
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -35,7 +48,8 @@ def login_view(request):
 
 @login_required
 def profile(request):
-    bookings = Booking.objects.filter(user=request.user)
+    # fetching user bookings with select_related to stop n+1 queries and make it fast
+    bookings = Booking.objects.filter(user=request.user).select_related('movie', 'theater', 'seat')
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         if u_form.is_valid():

@@ -1,0 +1,81 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Complete Payment</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{{ theaters.movie.name }}</h5>
+                    <p class="text-muted">{{ theaters.name }} | {{ theaters.time }}</p>
+
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr><th>Seat</th><th>Price</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.seat.seat_number }}</td>
+                                <td>₹200</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total</th>
+                                <th>₹{{ amount_display }}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <button id="pay-btn" class="btn btn-success btn-block btn-lg">
+                        Pay ₹{{ amount_display }}
+                    </button>
+                    <a href="{% url 'book_seats' theaters.id %}" class="btn btn-outline-secondary btn-block mt-2">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="payment-success-form" method="POST" action="{% url 'payment_success' theaters.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+</form>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('pay-btn').addEventListener('click', function() {
+        var options = {
+            key: '{{ razorpay_key_id }}',
+            amount: '{{ amount }}',
+            currency: 'INR',
+            name: 'BookMySeat',
+            description: '{{ theaters.movie.name }} - {{ theaters.name }}',
+            order_id: '{{ razorpay_order_id }}',
+            handler: function(response) {
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('payment-success-form').submit();
+            },
+            modal: {
+                ondismiss: function() {
+                    window.location.href = "{% url 'payment_failed' theaters.id %}?razorpay_order_id={{ razorpay_order_id }}";
+                }
+            },
+            theme: { color: '#28a745' }
+        };
+        var rzp = new Razorpay(options);
+        rzp.open();
+    });
+</script>
+{% endblock %}

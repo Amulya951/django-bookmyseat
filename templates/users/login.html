@@ -1,4 +1,9 @@
 {% extends "users/basic.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -55,23 +60,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .card {
-        border-radius: 1rem;
-    }
-    .card-header {
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-    }
-    .input-group-text {
-        background-color: #f8f9fa;
-    }
-    .form-control:focus {
-        box-shadow: none;
-        border-color: #80bdff;
-    }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

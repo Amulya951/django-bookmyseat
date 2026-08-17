@@ -1,0 +1,54 @@
+/* ============================================================
+   profile.css  —  User profile & bookings (templates/users/profile.html)
+   ============================================================ */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 15px;
+  border: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+/* Style form fields */
+form input,
+form select,
+form textarea {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+@media (max-width: 767.98px) {
+  .card-body {
+    padding: 1rem;
+  }
+}

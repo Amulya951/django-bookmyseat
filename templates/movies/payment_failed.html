@@ -1,0 +1,22 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Payment Failed</h4>
+                </div>
+                <div class="card-body">
+                    <p class="lead">{{ error }}</p>
+                    {% if theaters %}
+                    <a href="{% url 'book_seats' theaters.id %}" class="btn btn-primary mt-3">Try Again</a>
+                    {% endif %}
+                    <a href="{% url 'movie_list' %}" class="btn btn-outline-secondary mt-3 ml-2">Back to Movies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

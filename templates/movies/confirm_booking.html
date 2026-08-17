@@ -1,0 +1,80 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-clock mr-2"></i> Confirm Your Booking</h4>
+                </div>
+                <div class="card-body">
+
+                    <!-- Countdown Timer -->
+                    <div class="alert alert-warning text-center">
+                        <strong>Your seats are reserved for:</strong>
+                        <h2 id="countdown" class="mt-2"></h2>
+                        <small>Seats will be released automatically if not confirmed in time.</small>
+                    </div>
+
+                    <!-- Booking Details -->
+                    <h5>{{ theaters.movie.name }} — {{ theaters.name }}</h5>
+                    <p><i class="fas fa-calendar mr-1"></i> {{ theaters.time }}</p>
+
+                    <table class="table table-bordered mt-3">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Seat Number</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reservation in reservations %}
+                            <tr>
+                                <td>{{ reservation.seat.seat_number }}</td>
+                                <td><span class="badge badge-warning">Reserved</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Confirm Button -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-block btn-lg">
+                            <i class="fas fa-check mr-2"></i> Confirm Booking
+                        </button>
+                    </form>
+
+                    <a href="{% url 'book_seats' theaters.id %}" class="btn btn-outline-secondary btn-block mt-2">
+                        Cancel & Go Back
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var timeRemaining = parseInt("{{ time_remaining }}", 10);
+
+    function updateCountdown() {
+        if (timeRemaining <= 0) {
+            document.getElementById('countdown').innerHTML = "Time expired!";
+            setTimeout(function() {
+                window.location.href = "{% url 'book_seats' theaters.id %}";
+            }, 2000);
+            return;
+        }
+        var minutes = Math.floor(timeRemaining / 60);
+        var seconds = timeRemaining % 60;
+        document.getElementById('countdown').innerHTML =
+            minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        timeRemaining--;
+        setTimeout(updateCountdown, 1000);
+    }
+
+    updateCountdown();
+</script>
+{% endblock %}

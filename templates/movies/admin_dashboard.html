@@ -1,0 +1,128 @@
+{% extends "users/basic.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Admin Analytics Dashboard</h2>
+
+    <!-- Revenue Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-secondary">
+                <div class="card-body">
+                    <h6 class="card-title">Total Bookings</h6>
+                    <h3>{{ total_bookings }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body">
+                    <h6 class="card-title">Cancellation Rate</h6>
+                    <h3>{{ cancellation_rate }}%</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h6 class="card-title">Daily Revenue</h6>
+                    <h3>₹{{ daily_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h6 class="card-title">Weekly Revenue</h6>
+                    <h3>₹{{ weekly_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h6 class="card-title">Monthly Revenue</h6>
+                    <h3>₹{{ monthly_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Popular Movies -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">Most Popular Movies</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="thead-light">
+                            <tr><th>Movie</th><th>Bookings</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for movie in popular_movies %}
+                            <tr>
+                                <td>{{ movie.movie__name }}</td>
+                                <td>{{ movie.booking_count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center text-muted">No data yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Busiest Theaters -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">Busiest Theaters</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="thead-light">
+                            <tr><th>Theater</th><th>Booked</th><th>Occupancy</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for theater in busiest_theaters %}
+                            <tr>
+                                <td>{{ theater.theater__name }}</td>
+                                <td>{{ theater.booked_seats }}</td>
+                                <td>{{ theater.occupancy_rate }}%</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center text-muted">No data yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peak Booking Hours -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">Peak Booking Hours</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="thead-light">
+                            <tr><th>Hour</th><th>Bookings</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for peak in peak_hours %}
+                            <tr>
+                                <td>{{ peak.hour|date:"H:00" }}</td>
+                                <td>{{ peak.count }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="2" class="text-center text-muted">No data yet</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <small class="text-muted">Analytics Access restricted to staff only.</small>
+</div>
+{% endblock %}

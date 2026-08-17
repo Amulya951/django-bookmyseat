@@ -1,0 +1,25 @@
+/* ============================================================
+   register.css  —  Registration page (templates/users/register.html)
+   ============================================================ */
+
+.card {
+  border-radius: 1rem;
+}
+
+.card-header {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #80bdff;
+}
+
+.invalid-feedback {
+  display: block;
+}

@@ -1,8 +1,24 @@
-asgiref==3.7.2
-dj-database-url
-Django==3.2.19
-gunicorn==20.1.0
-psycopg2-binary
-sqlparse==0.4.4
-typing_extensions==4.7.0
-whitenoise==6.6.0
+Django==5.2.14
+asgiref==3.11.1
+sqlparse==0.5.5
+typing_extensions==4.16.0
+
+# Image handling for Movie.image (ImageField requires Pillow)
+pillow==12.2.0
+
+# Static files
+whitenoise==6.12.0
+
+# Database
+dj-database-url==3.1.2
+psycopg2-binary==2.9.12
+
+# Config
+python-dotenv==1.2.2
+
+# Payments
+razorpay==2.0.1
+
+# Background job that releases expired seat reservations
+APScheduler==3.11.2
+tzlocal==5.3.1

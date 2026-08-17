@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 8px; }
+        .header { background: #28a745; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; }
+        .footer { text-align: center; color: #999; font-size: 12px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Booking Confirmed!</h2>
+            <p>Your tickets for <strong>{{ movie_name }}</strong></p>
+        </div>
+        <p>Hi <strong>{{ username }}</strong>,</p>
+        <p>Your booking has been confirmed. Here are your details:</p>
+        <table>
+            <tr><th>Movie</th><td>{{ movie_name }}</td></tr>
+            <tr><th>Theater</th><td>{{ theater_name }}</td></tr>
+            <tr><th>Show Time</th><td>{{ show_time }}</td></tr>
+            <tr><th>Seats</th><td>{{ seat_numbers }}</td></tr>
+            <tr><th>Booked At</th><td>{{ booked_at }}</td></tr>
+        </table>
+        <p>Enjoy the movie!</p>
+        <div class="footer">BookMySeat &mdash; Your Ticket, Your Show</div>
+    </div>
+</body>
+</html>
