@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('time', models.TimeField()),
+                ('time', models.DateTimeField()),
                 ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='theaters', to='movies.movie')),
             ],
         ),

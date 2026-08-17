@@ -20,9 +20,4 @@ class Migration(migrations.Migration):
             name='language',
             field=models.CharField(choices=[('English', 'English'), ('Hindi', 'Hindi')], db_index=True, default='Hindi', max_length=100),
         ),
-        migrations.AlterField(
-            model_name='theater',
-            name='time',
-            field=models.DateTimeField(),
-        ),
     ]
