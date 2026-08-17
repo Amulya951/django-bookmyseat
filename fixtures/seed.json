@@ -891,10 +891,10 @@
   "model": "auth.user",
   "pk": 2,
   "fields": {
-    "password": "pbkdf2_sha256$1000000$EZu7MBEi7lhPzNjMFhKnEo$sFz4jN4bXHG3BAcLJQsiihcL1M/DHz5Xf+MW3cK9j10=",
+    "password": "pbkdf2_sha256$1000000$XGA4qnDh551A71owg3sBvI$GtTk86WL8CE1PRL2aTzBXe6XvWu11WECXZYKYkPS188=",
     "last_login": "2026-08-17T15:24:00.777Z",
     "is_superuser": true,
-    "username": "Amulya",
+    "username": "admin",
     "first_name": "",
     "last_name": "",
     "email": "amulyasangai@gmail.com",
