@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Movie, Theater, Seat, Booking, SeatReservation, Payment
+from .utils import youtube_embed_url
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import IntegrityError, transaction
 from django.template.loader import render_to_string
@@ -17,26 +18,27 @@ import hashlib
 import hmac
 import json
 import threading
-import re
+import time
 import logging
 
 logger = logging.getLogger(__name__)
 
 def movie_list(request):
-    movies = Movie.objects.all()
+    base = Movie.objects.all()
 
     search_query = request.GET.get('search')
     if search_query:
-        movies = movies.filter(name__icontains=search_query)
-    
-    genres = request.GET.getlist ('genre')
+        base = base.filter(name__icontains=search_query)
+
+    genres = request.GET.getlist('genre')
+    languages = request.GET.getlist('language')
+
+    movies = base
     if genres:
         movies = movies.filter(genre__in=genres)
-    
-    languages = request.GET.getlist('language')
     if languages:
         movies = movies.filter(language__in=languages)
-        
+
     sort = request.GET.get('sort', 'name')
     if sort == 'rating':
         movies = movies.order_by('-rating')
@@ -44,11 +46,14 @@ def movie_list(request):
         movies = movies.order_by('name')
 
     from django.core.paginator import Paginator
-    # Get counts for genres and languages without making it slow
-    filtered_movies = movies.order_by()  #for grouping the count of genres and languages 
-    genre_counts = filtered_movies.values('genre').annotate(count=Count('id'))
-    language_counts = filtered_movies.values('language').annotate(count=Count('id'))
-    
+    # Facet counts. Each facet is counted against every filter EXCEPT itself,
+    # so picking "Action" leaves the other genres visible and clickable —
+    # otherwise the multi-select collapses to whatever is already chosen.
+    genre_source = base.filter(language__in=languages) if languages else base
+    language_source = base.filter(genre__in=genres) if genres else base
+    genre_counts = genre_source.order_by().values('genre').annotate(count=Count('id'))
+    language_counts = language_source.order_by().values('language').annotate(count=Count('id'))
+
     #pagination
     paginator = Paginator(movies, 9) #this shows movies per page(9)
     page_number= request.GET.get('page')
@@ -66,13 +71,10 @@ def movie_list(request):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
 
-    embed_url = None
-    if movie.trailer_url:
-        match = re.search(r'(?:v=|youtu\.be/)([a-zA-Z0-9_-]+)', movie.trailer_url)
-        if match:
-            video_id = match.group(1)
-            embed_url = f"https://www.youtube.com/embed/{video_id}"
-    
+    # Validated + normalised in movies.utils so the template never receives
+    # anything but a youtube.com/embed/ URL we built ourselves.
+    embed_url = youtube_embed_url(movie.trailer_url)
+
     # fetch theaters with select_related so it loads instantly without n+1 queries
     theaters = Theater.objects.filter(movie=movie).select_related('movie')
     return render(request, 'movies/movie_detail.html', {
@@ -158,6 +160,11 @@ def book_seats(request, theater_id):  # Change from booking_Seats to book_seats
                     )
             except Seat.DoesNotExist:
                 error_seats.append(seat_id)
+            except IntegrityError:
+                # Final backstop: SeatReservation.seat / Booking.seat are unique,
+                # so a request that loses the race here is rejected by the
+                # database rather than silently double-booking.
+                error_seats.append(seat_id)
                 
         if error_seats:
             reserved_seat_ids = list(
@@ -194,23 +201,107 @@ def book_seats(request, theater_id):  # Change from booking_Seats to book_seats
         'booked_seat_ids': booked_seat_ids
     })
 
-def send_booking_email(user, theaters, seat_numbers):
+def build_email_context(user, theaters, seat_numbers, payment_id=None, amount=None):
+    """Resolve every value the email needs while still on the request thread.
+
+    The sender runs in a background thread, and a thread that touches the ORM
+    opens its own database connection that Django never cleans up. Doing the
+    lookups here keeps the sender free of database access entirely.
+    """
+    return {
+        'to_email': user.email,
+        'username': user.username,
+        'movie_name': theaters.movie.name,
+        'theater_name': theaters.name,
+        'show_time': theaters.time.strftime('%d %b %Y, %I:%M %p'),
+        'seat_numbers': ', '.join(seat_numbers),
+        'booked_at': timezone.now().strftime('%d %b %Y, %I:%M %p'),
+        'payment_id': payment_id,
+        'amount': amount,
+    }
+
+
+def send_booking_email(context):
+    to_email = context.get('to_email')
+    payment_id = context.get('payment_id')
+    if not to_email:
+        logger.warning("Skipping booking email: user %s has no email address", context.get('username'))
+        return
+
+    subject = f"Booking Confirmed - {context['movie_name']}"
+    html_message = render_to_string('movies/booking_confirmation_email.html', context)
+
+    # Retry with exponential backoff — a transient SMTP failure usually clears
+    # in a few seconds, and hammering the server immediately does not help.
     for attempt in range(3):
         try:
-            subject = f"Booking Confirmed - {theaters.movie.name}"
-            html_message = render_to_string('movies/booking_confirmation_email.html', {
-                'username': user.username,
-                'movie_name': theaters.movie.name,
-                'theater_name': theaters.name,
-                'show_time': theaters.time.strftime('%d %b %Y, %I:%M %p'),
-                'seat_numbers': ', '.join(seat_numbers),
-                'booked_at': timezone.now().strftime('%d %b %Y, %I:%M %p'),
-            })
-            send_mail(subject, '', None, [user.email], html_message=html_message)
-            break
+            send_mail(subject, '', None, [to_email], html_message=html_message)
+            logger.info("Booking email sent to %s for payment %s", to_email, payment_id)
+            return
         except Exception as e:
-            if attempt == 2:
-                logger.error(f"Failed to send booking email to {user.email} after 3 attempts: {e}")
+            logger.warning(
+                "Booking email attempt %s/3 failed for %s (payment %s): %s",
+                attempt + 1, to_email, payment_id, e,
+            )
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+
+    logger.error(
+        "Booking email PERMANENTLY FAILED for %s after 3 attempts (payment %s, seats %s)",
+        to_email, payment_id, context.get('seat_numbers'),
+    )
+
+
+def fulfil_payment(payment_id, razorpay_payment_id=None, razorpay_signature=None):
+    """Turn a paid order into bookings. Safe to call more than once.
+
+    Both the browser redirect and the Razorpay webhook land here and either
+    may arrive first (or twice), so the Payment row is locked and re-checked
+    inside the transaction. Returns the Payment on the call that actually
+    fulfilled it, or None if another call got there first.
+    """
+    with transaction.atomic():
+        try:
+            payment = Payment.objects.select_for_update().get(pk=payment_id)
+        except Payment.DoesNotExist:
+            return None
+
+        # The idempotency check has to happen under the row lock, otherwise
+        # two concurrent callbacks can both read 'pending' and both fulfil.
+        if payment.status == 'success':
+            return None
+
+        seats = list(Seat.objects.select_for_update().filter(payment=payment))
+        for seat in seats:
+            if seat.is_booked:
+                continue
+            Booking.objects.create(
+                user=payment.user,
+                seat=seat,
+                movie=payment.theater.movie,
+                theater=payment.theater,
+            )
+            seat.is_booked = True
+            seat.save(update_fields=['is_booked'])
+
+        SeatReservation.objects.filter(seat__in=seats, user=payment.user).delete()
+
+        if razorpay_payment_id:
+            payment.razorpay_payment_id = razorpay_payment_id
+        if razorpay_signature:
+            payment.razorpay_signature = razorpay_signature
+        payment.status = 'success'
+        payment.save()
+
+    invalidate_dashboard_cache()
+    return payment
+
+
+def invalidate_dashboard_cache():
+    cache.delete_many([
+        'total_bookings', 'daily_revenue', 'weekly_revenue', 'monthly_revenue',
+        'popular_movies', 'busiest_theaters', 'peak_hours', 'cancellation_rate',
+    ])
 
 
 @login_required(login_url='/login/')
@@ -229,14 +320,36 @@ def confirm_booking(request, theater_id):
 
     if request.method == 'POST':
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-        seat_count = reservations.count()
+        seat_ids = sorted(r.seat_id for r in reservations)
+        seat_count = len(seat_ids)
         amount = seat_count * 20000
+
+        # Idempotency: a double-click or refresh must not open a second order
+        # for the same seats. Reuse the pending order if one already covers
+        # exactly this selection.
+        existing = Payment.objects.filter(
+            user=request.user, theater=theaters, status='pending'
+        ).order_by('-created_at').first()
+        if existing and sorted(existing.seats.values_list('id', flat=True)) == seat_ids:
+            return render(request, 'movies/payment.html', {
+                'theaters': theaters,
+                'reservations': reservations,
+                'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+                'razorpay_order_id': existing.razorpay_order_id,
+                'amount': existing.amount,
+                'amount_display': existing.amount // 100,
+            })
+
+        # receipt doubles as our idempotency key in the Razorpay dashboard,
+        # making a duplicate submission easy to spot during reconciliation.
+        receipt = f"u{request.user.id}-t{theaters.id}-s{'_'.join(str(s) for s in seat_ids)}"[:40]
 
         try:
             order = client.order.create({
                 'amount': amount,
                 'currency': 'INR',
                 'payment_capture': 1,
+                'receipt': receipt,
             })
         except Exception:
             first_reservation = reservations.first()
@@ -314,37 +427,19 @@ def payment_success(request, theater_id):
         payment.save()
         return render(request, 'movies/payment_failed.html', {'error': 'Payment verification failed.'})
 
-    # atomic block to make sure payment and booking happen together securely
-    with transaction.atomic():
-        for seat in payment.seats.all():
-            if not seat.is_booked:
-                Booking.objects.create(
-                    user=request.user,
-                    seat=seat,
-                    movie=theaters.movie,
-                    theater=theaters
-                )
-                seat.is_booked = True
-                seat.save()
-        SeatReservation.objects.filter(seat__in=payment.seats.all(), user=request.user).delete()
-        payment.razorpay_payment_id = razorpay_payment_id
-        payment.razorpay_signature = razorpay_signature
-        payment.status = 'success'
-        payment.save()
-
-    cache.delete('total_bookings')
-    cache.delete('daily_revenue')
-    cache.delete('weekly_revenue')
-    cache.delete('monthly_revenue')
-    cache.delete('popular_movies')
-    cache.delete('busiest_theaters')
-    cache.delete('peak_hours')
-    cache.delete('cancellation_rate')
-
     seat_numbers = [str(s.seat_number) for s in payment.seats.all()]
-    thread = threading.Thread(target=send_booking_email, args=(request.user, theaters, seat_numbers))
-    thread.daemon = True
-    thread.start()
+    fulfilled = fulfil_payment(payment.id, razorpay_payment_id, razorpay_signature)
+
+    # Only the call that actually fulfilled the order sends mail, so a webhook
+    # arriving first does not produce a duplicate confirmation.
+    if fulfilled is not None:
+        email_context = build_email_context(
+            request.user, theaters, seat_numbers,
+            razorpay_payment_id, payment.amount // 100,
+        )
+        thread = threading.Thread(target=send_booking_email, args=(email_context,))
+        thread.daemon = True
+        thread.start()
 
     return redirect('profile')
 
@@ -373,16 +468,23 @@ def razorpay_webhook(request):
     if request.method != 'POST':
         return HttpResponse(status=405)
 
+    # Fail CLOSED. If the secret is not configured we cannot authenticate the
+    # caller, so we must reject rather than trust an unsigned payload —
+    # otherwise anyone who knows this URL could mark orders as paid.
     webhook_secret = getattr(settings, 'RAZORPAY_WEBHOOK_SECRET', None)
-    if webhook_secret:
-        webhook_signature = request.headers.get('X-Razorpay-Signature', '')
-        expected = hmac.new(
-            webhook_secret.encode(),
-            request.body,
-            hashlib.sha256
-        ).hexdigest()
-        if not hmac.compare_digest(expected, webhook_signature):
-            return HttpResponse(status=400)
+    if not webhook_secret:
+        logger.error("Razorpay webhook received but RAZORPAY_WEBHOOK_SECRET is not set; rejecting.")
+        return HttpResponse(status=503)
+
+    webhook_signature = request.headers.get('X-Razorpay-Signature', '')
+    expected = hmac.new(
+        webhook_secret.encode(),
+        request.body,
+        hashlib.sha256
+    ).hexdigest()
+    if not hmac.compare_digest(expected, webhook_signature):
+        logger.warning("Razorpay webhook signature mismatch; rejecting.")
+        return HttpResponse(status=400)
 
     try:
         payload = json.loads(request.body)
@@ -399,13 +501,26 @@ def razorpay_webhook(request):
         except Payment.DoesNotExist:
             return HttpResponse(status=200)
 
-        if event == 'payment.captured' and payment.status != 'success':
-            payment.razorpay_payment_id = payment_id
-            payment.status = 'success'
-            payment.save()
+        if event == 'payment.captured':
+            # Full fulfilment, not just a status flip — if the user closed the
+            # browser before the redirect, this is the only thing that will
+            # ever create their Booking rows. fulfil_payment is idempotent, so
+            # a duplicate webhook delivery is a no-op.
+            seat_numbers = [str(s.seat_number) for s in payment.seats.all()]
+            email_context = build_email_context(
+                payment.user, payment.theater, seat_numbers,
+                payment_id, payment.amount // 100,
+            )
+            fulfilled = fulfil_payment(payment.id, payment_id)
+            if fulfilled is not None:
+                logger.info("Payment %s fulfilled via webhook", order_id)
+                thread = threading.Thread(target=send_booking_email, args=(email_context,))
+                thread.daemon = True
+                thread.start()
         elif event == 'payment.failed' and payment.status == 'pending':
             payment.status = 'failed'
             payment.save()
+            invalidate_dashboard_cache()
 
     except (json.JSONDecodeError, KeyError):
         return HttpResponse(status=400)
@@ -458,15 +573,25 @@ def admin_dashboard(request):
             .annotate(booked_seats=Count('id'))
             .order_by('-booked_seats')[:5]
         )
+        # One grouped query for the seat totals instead of a COUNT per theater
+        # inside the loop (was N+1).
+        seat_totals = dict(
+            Seat.objects.filter(theater_id__in=[t['theater__id'] for t in busiest_theaters])
+            .values_list('theater_id')
+            .annotate(total=Count('id'))
+        )
         for t in busiest_theaters:
-            total_seats = Seat.objects.filter(theater_id=t['theater__id']).count()
+            total_seats = seat_totals.get(t['theater__id'], 0)
             t['occupancy_rate'] = round((t['booked_seats'] / total_seats * 100), 1) if total_seats > 0 else 0
         cache.set('busiest_theaters', busiest_theaters, 300)
 
     peak_hours = cache.get('peak_hours')
     if peak_hours is None:
+        # Bounded to 30 days so this stays an indexed range scan on booked_at
+        # rather than grouping the entire bookings table.
         peak_hours = list(
-            Booking.objects.annotate(hour=TruncHour('booked_at'))
+            Booking.objects.filter(booked_at__gte=today - timedelta(days=30))
+            .annotate(hour=TruncHour('booked_at'))
             .values('hour')
             .annotate(count=Count('id'))
             .order_by('-count')[:5]

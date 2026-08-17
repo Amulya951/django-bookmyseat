@@ -24,8 +24,14 @@
             <tr><th>Theater</th><td>{{ theater_name }}</td></tr>
             <tr><th>Show Time</th><td>{{ show_time }}</td></tr>
             <tr><th>Seats</th><td>{{ seat_numbers }}</td></tr>
+            {% if amount %}<tr><th>Amount Paid</th><td>&#8377;{{ amount }}</td></tr>{% endif %}
+            {% if payment_id %}<tr><th>Payment ID</th><td>{{ payment_id }}</td></tr>{% endif %}
             <tr><th>Booked At</th><td>{{ booked_at }}</td></tr>
         </table>
+        <p style="font-size:12px;color:#777;">
+            Quote the Payment ID above if you need to contact support. We never
+            ask for your card details, OTP or password by email.
+        </p>
         <p>Enjoy the movie!</p>
         <div class="footer">BookMySeat &mdash; Your Ticket, Your Show</div>
     </div>

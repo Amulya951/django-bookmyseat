@@ -1,0 +1,944 @@
+[
+{
+  "model": "movies.movie",
+  "pk": 1,
+  "fields": {
+    "name": "Avengers",
+    "image": "movies/Avengers_image.jpg",
+    "rating": "8.8",
+    "cast": "tony, steve, chris,",
+    "description": "After the devastating events of Avengers: Infinity War (2018), the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions and restore balance to the universe.",
+    "genre": "Action",
+    "trailer_url": "https://www.youtube.com/watch?v=eOrNdBpGMv8",
+    "language": "English"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 2,
+  "fields": {
+    "name": "Jeene Nahi Doonga",
+    "image": "movies/Jeene_Nahi_Doonga.jpg",
+    "rating": "7.3",
+    "cast": "Hero, Heroine, Villian",
+    "description": "The character doesn't let other character live",
+    "genre": "Drama",
+    "trailer_url": null,
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 3,
+  "fields": {
+    "name": "Dragon Ball Z SUPER",
+    "image": "movies/Dragon_Ball_Z_SUPER.webp",
+    "rating": "9.3",
+    "cast": "MANYYYYYYY",
+    "description": "FIGHTTTT AWESOME FIGHT",
+    "genre": "Animation",
+    "trailer_url": null,
+    "language": "English"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 4,
+  "fields": {
+    "name": "Chota Bheem and the Throne of Bali",
+    "image": "movies/Chota_Bheem_-_Bali.jpg",
+    "rating": "6.6",
+    "cast": "IDK chota bheem and gang",
+    "description": "Chota bheem + Laddoo = Villan loses",
+    "genre": "Animation",
+    "trailer_url": null,
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 5,
+  "fields": {
+    "name": "Dhurandar",
+    "image": "movies/Dhurandar_1.webp",
+    "rating": "9.2",
+    "cast": "Ranbir Singh, Sanjay Dutt, etc",
+    "description": "Dhurandhar is a 2025 Indian Hindi-language spy action thriller film directed by Aditya Dhar. The film follows an undercover Indian intelligence agent who infiltrates Karachi's criminal syndicates and political power structures in Pakistan to dismantle a terror network targeting India.",
+    "genre": "Action",
+    "trailer_url": null,
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 6,
+  "fields": {
+    "name": "Dhurandar The Revenge",
+    "image": "movies/Dhurandhar-2.webp",
+    "rating": "9.2",
+    "cast": "Ranbir Singh, Sanjay Dutt",
+    "description": "Dhurandhar: The Revenge is a sequel to the 2025 film Dhurandhar and the final installment of a duology. The film follows an undercover Indian intelligence agent who continues to infiltrate Karachi's criminal syndicates and Pakistani politics while avenging the 26/11 attacks and confronting larger threats. The storyline loosely incorporates multiple real-life geopolitical events and conflicts in South Asia, including Operation Lyari, the 2014 Indian general election, and the 2016 Indian banknote demonetisation.",
+    "genre": "Action",
+    "trailer_url": null,
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 7,
+  "fields": {
+    "name": "F1 The Movie",
+    "image": "movies/F1_poster.jpg",
+    "rating": "9.0",
+    "cast": "Brad Pitt",
+    "description": "F1: The Movie is a high-octane sports drama film that follows the story of Sonny Hayes, a former Formula One driver who returns to the sport after a 30-year absence. The film stars Brad Pitt as Sonny Hayes, who, after a career-ending crash, now lives as a racer-for-hire. He is approached by his former teammate Ruben Cervantes, who owns a struggling Formula One team.",
+    "genre": "Sports",
+    "trailer_url": null,
+    "language": "English"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 8,
+  "fields": {
+    "name": "Taare Zameen Par",
+    "image": "movies/Tare_zameen_par.jpg",
+    "rating": "8.3",
+    "cast": "Aamir Khan",
+    "description": "A movie about Indian parenting and a dyslexic child conflict in house ends up in the boarding school because not being able to study properly",
+    "genre": "Family",
+    "trailer_url": "https://www.youtube.com/watch?v=l5mP7W58AsI",
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 9,
+  "fields": {
+    "name": "Kalki 2896 AD",
+    "image": "movies/Kalki_poster.jpg",
+    "rating": "7.0",
+    "cast": "Prabhas, Amitabh Bachchan, Kamal Haasan",
+    "description": "During the Kurukshetra war Ashwatthama is cursed by lord Krishna to attain immortality and witness humanity during Kalyug.His redemption can occur by protecting mother of Kalki the last reincarnation of Lord Vishnu. Six thousand years later in the futuristic world deserted city of Kasi is ruled by an evil Yaskin.His complex is run by Commander Manas whose team is working on Project K for Yaskin.They capture fertile women and their serum is used to increase life of Yaskin but hardly any female survive beyond 120 days of fertility.Sum 80 (Sumati) suppresses 150 days and is about to meet the same faith as others.But manages to elope with help of few rebels,Ashwatthama realizes that Sumati is the woman he is there to protect and comes to her aid.Yaskin and Manas are desperate to find Sumati but Ashwatthama stands between them. A confusion arises when Bhairav comes to save Sumati where he and Ashwatthama clash mistaken themselves as either to be enemy of Sumati.",
+    "genre": "Sci-Fi",
+    "trailer_url": "https://www.youtube.com/watch?v=aninoDcPWo4",
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.movie",
+  "pk": 10,
+  "fields": {
+    "name": "Bhool Bhulaiya 3",
+    "image": "movies/Bhool_Bhulaiya_3.avif",
+    "rating": "4.5",
+    "cast": "Kartik Aaryan, Triptii Dimri, Vidya Balan",
+    "description": "1824 Manjulika is burnt alive by a Maharaja but she returns to take revenge and haunts the palace.Two hundred years later in present time Ruhan cons people as Rooh Baba by assuring to free them from spirits.He has a visitor Meera and her uncle who ask him to accompany them to their palace haunted by Manjulika and promise him huge sum.Upon reaching he realizes that no one lives in the palace fearing the ghost and Meera and her family live in cowshed in poverty.The villagers give Ruhan shocking looks and he realizes from head priest that he is reincarnation of their king who was killed by his sister Manjulika.The village burns Manjulika's statute every year during a festival but this time a mysterious women Mallika enters the palace and claims o be a historian and during her research leads to a secret passage which the head priest asks not to open until Durga Asthami.But Ruhan,Meera and others open the door of secret passage where head priest arrives to tell that more havoc is waiting to come on the palace.As he finds that the king had two sisters who were jealous of him and wanted to kill him.But it's a mystery that who was actually Manjulika who killed him and the havoc arrives in form of Mandira whose waiting to enter the palace.",
+    "genre": "Horror",
+    "trailer_url": "https://www.youtube.com/watch?v=XW1RkKiRnsg",
+    "language": "Hindi"
+  }
+},
+{
+  "model": "movies.theater",
+  "pk": 1,
+  "fields": {
+    "name": "Swarn Cinemas",
+    "movie": 1,
+    "time": "2026-05-19T18:00:00Z"
+  }
+},
+{
+  "model": "movies.theater",
+  "pk": 2,
+  "fields": {
+    "name": "Swarn Cinemas",
+    "movie": 2,
+    "time": "2026-05-13T10:10:25Z"
+  }
+},
+{
+  "model": "movies.theater",
+  "pk": 3,
+  "fields": {
+    "name": "Swarn Cinemas",
+    "movie": 3,
+    "time": "2026-05-13T10:10:25Z"
+  }
+},
+{
+  "model": "movies.theater",
+  "pk": 4,
+  "fields": {
+    "name": "Swarn Cinemas",
+    "movie": 4,
+    "time": "2026-05-13T10:10:45Z"
+  }
+},
+{
+  "model": "movies.theater",
+  "pk": 5,
+  "fields": {
+    "name": "Swarn Cinemas",
+    "movie": 10,
+    "time": "2026-06-21T18:00:00Z"
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 1,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a1",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 2,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a2",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 3,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a3",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 4,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a4",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 5,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A1",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 6,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A2",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 7,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A3",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 8,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A4",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 9,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A5",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 10,
+  "fields": {
+    "theater": 2,
+    "seat_number": "A6",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 11,
+  "fields": {
+    "theater": 3,
+    "seat_number": "A1",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 12,
+  "fields": {
+    "theater": 3,
+    "seat_number": "A2",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 13,
+  "fields": {
+    "theater": 3,
+    "seat_number": "A3",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 14,
+  "fields": {
+    "theater": 3,
+    "seat_number": "A4",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 15,
+  "fields": {
+    "theater": 3,
+    "seat_number": "A5",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 16,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A6",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 17,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A1",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 18,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A2",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 19,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A3",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 20,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A4",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 21,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A5",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 22,
+  "fields": {
+    "theater": 4,
+    "seat_number": "A6",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 23,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a5",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 24,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a6",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 25,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a7",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 26,
+  "fields": {
+    "theater": 1,
+    "seat_number": "a8",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 27,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B1",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 28,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B2",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 29,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B3",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 30,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B4",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 31,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B5",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 32,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B6",
+    "is_booked": true
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 33,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B7",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 34,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B8",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 35,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B9",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.seat",
+  "pk": 36,
+  "fields": {
+    "theater": 5,
+    "seat_number": "B10",
+    "is_booked": false
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "seat": 2,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-05-15T08:27:30.135Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 3,
+  "fields": {
+    "user": 2,
+    "seat": 3,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-05-15T08:27:30.143Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 4,
+  "fields": {
+    "user": 2,
+    "seat": 4,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-05-15T08:27:30.148Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 5,
+  "fields": {
+    "user": 2,
+    "seat": 5,
+    "movie": 2,
+    "theater": 2,
+    "booked_at": "2026-05-19T10:24:07.914Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 6,
+  "fields": {
+    "user": 2,
+    "seat": 6,
+    "movie": 2,
+    "theater": 2,
+    "booked_at": "2026-05-19T10:24:07.935Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 7,
+  "fields": {
+    "user": 2,
+    "seat": 7,
+    "movie": 2,
+    "theater": 2,
+    "booked_at": "2026-05-19T10:26:35.518Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 8,
+  "fields": {
+    "user": 2,
+    "seat": 10,
+    "movie": 2,
+    "theater": 2,
+    "booked_at": "2026-05-19T10:26:35.537Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 9,
+  "fields": {
+    "user": 2,
+    "seat": 1,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-06-02T07:12:21.770Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 10,
+  "fields": {
+    "user": 2,
+    "seat": 24,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-06-05T07:43:37.909Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 11,
+  "fields": {
+    "user": 3,
+    "seat": 23,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-06-05T08:47:21.471Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 12,
+  "fields": {
+    "user": 4,
+    "seat": 25,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-06-05T08:56:13.404Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 13,
+  "fields": {
+    "user": 4,
+    "seat": 26,
+    "movie": 1,
+    "theater": 1,
+    "booked_at": "2026-06-05T08:56:13.412Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 14,
+  "fields": {
+    "user": 2,
+    "seat": 31,
+    "movie": 10,
+    "theater": 5,
+    "booked_at": "2026-06-21T08:49:42.844Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 15,
+  "fields": {
+    "user": 3,
+    "seat": 32,
+    "movie": 10,
+    "theater": 5,
+    "booked_at": "2026-06-21T08:50:16.861Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 16,
+  "fields": {
+    "user": 3,
+    "seat": 8,
+    "movie": 2,
+    "theater": 2,
+    "booked_at": "2026-06-21T08:54:45.477Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.booking",
+  "pk": 17,
+  "fields": {
+    "user": 3,
+    "seat": 16,
+    "movie": 4,
+    "theater": 4,
+    "booked_at": "2026-06-28T13:52:31.143Z",
+    "price": "200.00"
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T73fHOYNVrI7vW",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-06-28T12:53:16.359Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T73oQi4WsLwzKp",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-06-28T13:01:56.085Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T742NmRKwC3J0H",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-06-28T13:15:08.600Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T74BQcb5BREmqQ",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "pending",
+    "created_at": "2026-06-28T13:23:42.406Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T74CX7mHzBlJW8",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-06-28T13:24:45.163Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 6,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T74OBpKMmCSR5b",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-06-28T13:35:47.259Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 7,
+  "fields": {
+    "user": 3,
+    "theater": 5,
+    "razorpay_order_id": "order_T74PogW0rIHjly",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "pending",
+    "created_at": "2026-06-28T13:37:19.655Z",
+    "seats": [
+      27
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 8,
+  "fields": {
+    "user": 3,
+    "theater": 5,
+    "razorpay_order_id": "order_T74UMHGML8Jcrb",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "pending",
+    "created_at": "2026-06-28T13:41:37.631Z",
+    "seats": [
+      28
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 9,
+  "fields": {
+    "user": 3,
+    "theater": 4,
+    "razorpay_order_id": "order_T74f7VM5khwMk9",
+    "razorpay_payment_id": "pay_T74fSIf5VEzlCE",
+    "razorpay_signature": "5e9960fc7d65680e4f3f98561df3f0c7ccc0e4d2ea05a9435ef58d88969158c3",
+    "amount": 20000,
+    "status": "success",
+    "created_at": "2026-06-28T13:51:48.890Z",
+    "seats": [
+      16
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 10,
+  "fields": {
+    "user": 3,
+    "theater": 5,
+    "razorpay_order_id": "order_TBjXL2Fl79kFo3",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-07-10T08:26:58.021Z",
+    "seats": [
+      34
+    ]
+  }
+},
+{
+  "model": "movies.payment",
+  "pk": 11,
+  "fields": {
+    "user": 2,
+    "theater": 2,
+    "razorpay_order_id": "order_TQsRkmp1rCrNaw",
+    "razorpay_payment_id": null,
+    "razorpay_signature": null,
+    "amount": 20000,
+    "status": "failed",
+    "created_at": "2026-08-17T14:54:56.083Z",
+    "seats": [
+      9
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$4b8LOrqvn0T8CP3SpaD9JX$ZHn3wvybAH9usCvlFujmuYr7huuob7NZ3wve3lsxEIY=",
+    "last_login": "2026-08-17T14:44:21.935Z",
+    "is_superuser": true,
+    "username": "Amulya",
+    "first_name": "",
+    "last_name": "",
+    "email": "amulyasangai@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-05-10T08:32:46.776Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$NChe8ZcV0HtEm5uZurp0dr$2TmKFAGXTAFbUEYve1dmNUUjd1rnRHc8vDloTnhLEUY=",
+    "last_login": "2026-07-10T08:26:44.979Z",
+    "is_superuser": false,
+    "username": "Sparsh",
+    "first_name": "",
+    "last_name": "",
+    "email": "sparsh30@live.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-05T07:46:26Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$SfPjWxPzKjfbdCc3Sta5Sj$792RkPF4lyfWITOiDdbqwdr96G7X4H696zC6MRSjbGY=",
+    "last_login": "2026-06-05T08:55:29.243Z",
+    "is_superuser": false,
+    "username": "UjjwalKant",
+    "first_name": "",
+    "last_name": "",
+    "email": "ukant9218@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-06-05T08:55:28.077Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

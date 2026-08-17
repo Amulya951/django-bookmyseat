@@ -33,7 +33,19 @@ class Movie(models.Model):
     ]
 
     trailer_url = models.URLField(blank=True, null=True) #trailer emmbedding 
-    language = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='Hindi', db_index=True)   
+    language = models.CharField(max_length=100, choices=LANGUAGE_CHOICES, default='Hindi', db_index=True)
+
+    class Meta:
+        indexes = [
+            # Backs the two sort orders offered on the movie list, so
+            # ORDER BY ... LIMIT/OFFSET reads the index instead of sorting
+            # the whole catalogue on every page request.
+            models.Index(fields=['name'], name='movie_name_idx'),
+            models.Index(fields=['-rating'], name='movie_rating_desc_idx'),
+            # Composite index for the common case: both filters applied at once.
+            models.Index(fields=['genre', 'language'], name='movie_genre_lang_idx'),
+        ]
+
     def __str__(self):
         return self.name
     

@@ -60,8 +60,26 @@ MIDDLEWARE = [
 AUTH_USER_MODEL = 'auth.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Uploaded posters live inside the static tree rather than a separate media
+# directory. Vercel's filesystem is read-only and ephemeral, so a conventional
+# MEDIA_ROOT would 404 in production; routing media through static means the
+# posters are committed, collected, and served by WhiteNoise like any other
+# asset. Image paths are stored as "movies/<file>", so this resolves to
+# /static/movies/<file> with no template or database changes.
+# Known constraint: uploading a NEW poster via the admin on the deployed site
+# will not persist — posters must be added to static/movies/ and redeployed.
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+
+# WhiteNoise serves everything under public/ from the URL root, so
+# public/media/movies/X.jpg is available at /media/movies/X.jpg in both
+# development and production. The posters are committed to the repository
+# because Vercel's filesystem is read-only and ephemeral — a conventional
+# MEDIA_ROOT outside the deployment would 404 in production.
+# Known constraint: uploading a NEW poster through the admin on the deployed
+# site will not persist. New posters go in public/media/movies/ and ship with
+# the next deploy.
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'public')
 
 
 ROOT_URLCONF = 'bookmyseat.urls'
@@ -161,4 +179,45 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'bookmyseat-cache',
     }
+}
+
+# Logging — failed booking emails, webhook rejections and payment fulfilment
+# are all reported through this. Goes to stdout so Vercel captures it in the
+# function logs; a file handler would be lost on a read-only filesystem.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'movies': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'apscheduler': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+    },
 }
